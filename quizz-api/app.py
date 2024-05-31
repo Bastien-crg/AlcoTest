@@ -52,6 +52,7 @@ def GetQuestionInfo(questionId):
 	merged_json_str = json.dumps(merged_dict)
 	return merged_json_str, 200
 
+
 @app.route('/questions', methods=['GET'])
 def GetQuestionInfoByPosition():
 	bar = request.args.to_dict()
@@ -69,8 +70,23 @@ def UpdateQuestion(questionId):
 	payload = request.get_json()
 	Question.UpdateQuestion(questionId,payload)
 	Answer.UpdateAnswer(questionId,payload)
-	return 'Unauthorized', 204
+	return 'No content', 204
 
+@app.route('/questions/<questionId>', methods=['DELETE'])
+def DeleteQuestion(questionId):
+	if (request.headers.get('Authorization') == None):
+		return 'Unauthorized', 401
+	Answer.DeleteAnswer(questionId)
+	Question.DeleteQuestion(questionId)
+	return 'No content', 204
+
+@app.route('/questions/all', methods=['DELETE'])
+def DeleteAllQuestion():
+	if (request.headers.get('Authorization') == None):
+		return 'Unauthorized', 401
+	Answer.DeleteAllAnswer()
+	Question.DeleteAllQuestion()
+	return 'No content', 204
 
 if __name__ == "__main__":
     app.run()

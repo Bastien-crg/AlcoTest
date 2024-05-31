@@ -105,7 +105,6 @@ class Question():
         SELECT 1 FROM questions WHERE position = ? and id != ?
         ''', (Json['position'],id))
         if(cur.fetchone() is not None):
-            print("gucci")
             Question.UpdatePositionAllQuestion(Json['position'],cur)
             cur.execute('''
             UPDATE questions
@@ -113,6 +112,29 @@ class Question():
             WHERE id = ?
             ''', (Json['position'], id))
         cur.execute("commit")
+        
+    @staticmethod
+    def DeleteQuestion(id : int):
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")    
+        cur.execute('''
+        DELETE FROM questions
+        WHERE id = ?
+        ''', (id,))
+        cur.execute("commit") 
+        
+    @staticmethod
+    def DeleteAllQuestion():
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")    
+        cur.execute('''
+        DELETE FROM questions
+        ''',)
+        cur.execute("commit")   
         
     
     

@@ -67,15 +67,34 @@ class Answer():
         db_connection.isolation_level = None
         cur = db_connection.cursor()
         cur.execute("begin")      
+        Answer.DeleteAnswer(questionId)
+        for data in Json["possibleAnswers"]:
+            anwser = Answer.ConvertToPython(data)
+            anwser.questionId = questionId
+            Answer.AddAnswerToSql(anwser)
+            
+    @staticmethod
+    def DeleteAnswer(questionId : int):
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")     
         cur.execute('''
         DELETE FROM Anwsers
         WHERE questionId = ?
         ''', (questionId,))
         cur.execute("commit")
-        for data in Json["possibleAnswers"]:
-            anwser = Answer.ConvertToPython(data)
-            anwser.questionId = questionId
-            Answer.AddAnswerToSql(anwser)
+        
+    @staticmethod
+    def DeleteAllAnswer():
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")     
+        cur.execute('''
+        DELETE FROM Anwsers
+        ''',)
+        cur.execute("commit")
         
 
         
