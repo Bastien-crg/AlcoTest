@@ -50,7 +50,6 @@ def GetQuestionInfo(questionId):
 	dict2 = json.loads(lst)
 	merged_dict = {**dict1, **dict2}
 	merged_json_str = json.dumps(merged_dict)
-	print(merged_json_str)
 	return merged_json_str, 200
 
 @app.route('/questions', methods=['GET'])
@@ -63,8 +62,15 @@ def GetQuestionInfoByPosition():
 	dict2 = json.loads(lst)
 	merged_dict = {**dict1, **dict2}
 	merged_json_str = json.dumps(merged_dict)
-	print(merged_json_str)
 	return merged_json_str, 200
+
+@app.route('/questions/<questionId>', methods=['PUT'])
+def UpdateQuestion(questionId):
+	payload = request.get_json()
+	Question.UpdateQuestion(questionId,payload)
+	Answer.UpdateAnswer(questionId,payload)
+	return 'Unauthorized', 204
+
 
 if __name__ == "__main__":
     app.run()

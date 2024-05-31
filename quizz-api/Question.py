@@ -75,3 +75,44 @@ class Question():
         return Json
     
     
+    @staticmethod
+    def UpdateQuestion(id : int,Json : str):
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")      
+        Question.UpdateValuesQuestion(Json,cur,id)      
+        
+        
+    
+    @staticmethod
+    def UpdatePositionAllQuestion(position : int,cur):
+        sql_select_query = """UPDATE questions
+        SET position = position + 1
+        WHERE position >= ?"""
+        cur.execute(sql_select_query, (position,))
+        
+        
+    @staticmethod
+    def UpdateValuesQuestion(Json : str,cur,id : int):
+        cur.execute('''
+        UPDATE questions
+        SET content = ?, title = ?, image = ?
+        WHERE id = ?
+        ''', (Json['text'],Json['title'],Json['image'], id))
+        
+        cur.execute('''
+        SELECT 1 FROM questions WHERE position = ? and id != ?
+        ''', (Json['position'],id))
+        if(cur.fetchone() is not None):
+            print("gucci")
+            Question.UpdatePositionAllQuestion(Json['position'],cur)
+            cur.execute('''
+            UPDATE questions
+            SET position = ?
+            WHERE id = ?
+            ''', (Json['position'], id))
+        cur.execute("commit")
+        
+    
+    

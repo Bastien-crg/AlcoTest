@@ -44,7 +44,7 @@ class Answer():
         db_connection.isolation_level = None
         cur = db_connection.cursor()
         cur.execute("begin")
-        sql_select_query = """select * from Anwsers where QuestionId = ?"""
+        sql_select_query = """select * from Anwsers where questionId = ?"""
         cur.execute(sql_select_query, (id,))
         records = cur.fetchall()
         lst = []
@@ -60,3 +60,22 @@ class Answer():
             "isCorrect" : bool(data[3]),
         }
         return Json
+    
+    @staticmethod
+    def UpdateAnswer(questionId : int,Json : str):
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")      
+        cur.execute('''
+        DELETE FROM Anwsers
+        WHERE questionId = ?
+        ''', (questionId,))
+        cur.execute("commit")
+        for data in Json["possibleAnswers"]:
+            anwser = Answer.ConvertToPython(data)
+            anwser.questionId = questionId
+            Answer.AddAnswerToSql(anwser)
+        
+
+        
