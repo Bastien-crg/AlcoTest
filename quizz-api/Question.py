@@ -50,6 +50,8 @@ class Question():
         sql_select_query = """select * from Questions where id = ?"""
         cur.execute(sql_select_query, (id,))
         records = cur.fetchall()
+        if(not Question.IsQuestionExisting(id)):
+            return False
         return Question.TupleToJson(records[0])
 
     @staticmethod
@@ -61,6 +63,8 @@ class Question():
         sql_select_query = """select * from Questions where position = ?"""
         cur.execute(sql_select_query, (position,))
         records = cur.fetchall()
+        if(records == []):
+            return False
         return Question.TupleToJson(records[0])
 
     @staticmethod
@@ -80,8 +84,11 @@ class Question():
         db_connection = sqlite3.connect(f"SQLBase.db")
         db_connection.isolation_level = None
         cur = db_connection.cursor()
-        cur.execute("begin")      
-        Question.UpdateValuesQuestion(Json,cur,id)      
+        cur.execute("begin") 
+        if(not Question.IsQuestionExisting(id)):
+            return False     
+        Question.UpdateValuesQuestion(Json,cur,id) 
+        return True     
         
         
     
@@ -118,12 +125,15 @@ class Question():
         db_connection = sqlite3.connect(f"SQLBase.db")
         db_connection.isolation_level = None
         cur = db_connection.cursor()
-        cur.execute("begin")    
+        cur.execute("begin")
+        if(not Question.IsQuestionExisting(id)):
+            return False    
         cur.execute('''
         DELETE FROM questions
         WHERE id = ?
         ''', (id,))
         cur.execute("commit") 
+        return True
         
     @staticmethod
     def DeleteAllQuestion():
@@ -136,5 +146,17 @@ class Question():
         ''',)
         cur.execute("commit")   
         
-    
+    @staticmethod
+    def IsQuestionExisting(id : int):
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")
+        cur.execute('''
+        SELECT 1 FROM questions WHERE id = ?
+        ''', (id,))
+        cur.execute("commit")
+        if(cur.fetchone() is None):
+            return False
+        return True
     

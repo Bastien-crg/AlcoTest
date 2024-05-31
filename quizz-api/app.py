@@ -45,6 +45,8 @@ def CreateQuestion():
 @app.route('/questions/<questionId>', methods=['GET'])
 def GetQuestionInfo(questionId):
 	Json = Question.GetQuestionFromSqlId(questionId)
+	if(not Json):
+		return "No Content", 404
 	lst = Answer.GetListAnswerFromSqlQuestionId(questionId)
 	dict1 = json.loads(Json)
 	dict2 = json.loads(lst)
@@ -57,6 +59,8 @@ def GetQuestionInfo(questionId):
 def GetQuestionInfoByPosition():
 	bar = request.args.to_dict()
 	Json = Question.GetQuestionFromSqlPosition(bar['position'])
+	if(not Json):
+		return "No Content", 404
 	temp = json.loads(Json)
 	lst = Answer.GetListAnswerFromSqlQuestionId(int(temp['id']))
 	dict1 = json.loads(Json)
@@ -68,7 +72,10 @@ def GetQuestionInfoByPosition():
 @app.route('/questions/<questionId>', methods=['PUT'])
 def UpdateQuestion(questionId):
 	payload = request.get_json()
-	Question.UpdateQuestion(questionId,payload)
+	
+	bollean = Question.UpdateQuestion(questionId,payload)
+	if(not bollean):
+		return "No Content", 404
 	Answer.UpdateAnswer(questionId,payload)
 	return 'No content', 204
 
@@ -76,6 +83,8 @@ def UpdateQuestion(questionId):
 def DeleteQuestion(questionId):
 	if (request.headers.get('Authorization') == None):
 		return 'Unauthorized', 401
+	if(not Question.IsQuestionExisting(questionId)):
+		return "No Content", 404
 	Answer.DeleteAnswer(questionId)
 	Question.DeleteQuestion(questionId)
 	return 'No content', 204
