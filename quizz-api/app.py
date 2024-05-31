@@ -4,6 +4,7 @@ import jwt_utils
 import sqlite3
 from Question import Question 
 from Answer import Answer
+import json
 
 app = Flask(__name__)
 app = Flask(__name__)
@@ -30,10 +31,9 @@ def Login():
 
 @app.route('/questions', methods=['POST'])
 def CreateQuestion():    
-	request.headers.get('Authorization')
-	
-	payload = request.get_json() 
-	print(payload)
+	if (request.headers.get('Authorization') == None):
+		return 'Unauthorized', 401
+	payload = request.get_json()
 	question = Question.ConvertToPython(payload)
 	Question.AddQuestionToSql(question)		
 	for data in payload["possibleAnswers"]:
@@ -42,7 +42,16 @@ def CreateQuestion():
 		Answer.AddAnswerToSql(anwser)
 	return {"id" : question.id}, 200
  
-
+@app.route('/questions/<questionId>', methods=['GET'])
+def GetQuestionInfo(questionId):
+	Json = Question.GetQuestionFromSql(questionId)
+	lst = Answer.GetListAnswerFromSql(questionId)
+	dict1 = json.loads(Json)
+	dict2 = json.loads(lst)
+	merged_dict = {**dict1, **dict2}
+	merged_json_str = json.dumps(merged_dict)
+	print(merged_json_str)
+	return merged_json_str, 200
 
 if __name__ == "__main__":
     app.run()

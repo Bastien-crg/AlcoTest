@@ -131,3 +131,4 @@ dist
 
 quizz-api/myenv
 quizz-api/__pycache__
+quizz-api/SQLBase.db

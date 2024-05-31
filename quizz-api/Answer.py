@@ -38,3 +38,25 @@ class Answer():
         cur.execute("commit")
         anwser.id = cur.lastrowid
 
+    @staticmethod
+    def GetListAnswerFromSql(id : int):
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")
+        sql_select_query = """select * from Anwsers where QuestionId = ?"""
+        cur.execute(sql_select_query, (id,))
+        records = cur.fetchall()
+        lst = []
+        for data in records:
+            lst.append(Answer.TupleToJson(data))
+        return json.dumps({"possibleAnswers" : lst})
+
+    @staticmethod
+    def TupleToJson(data : tuple):
+        Json = {
+            "is" : data[1],
+            "text" : data[2],
+            "isCorrect" : bool(data[3]),
+        }
+        return Json
