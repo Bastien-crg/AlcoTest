@@ -42,13 +42,24 @@ class Question():
         question.id = cur.lastrowid
 
     @staticmethod
-    def GetQuestionFromSql(id : int):
+    def GetQuestionFromSqlId(id : int):
         db_connection = sqlite3.connect(f"SQLBase.db")
         db_connection.isolation_level = None
         cur = db_connection.cursor()
         cur.execute("begin")
         sql_select_query = """select * from Questions where id = ?"""
         cur.execute(sql_select_query, (id,))
+        records = cur.fetchall()
+        return Question.TupleToJson(records[0])
+
+    @staticmethod
+    def GetQuestionFromSqlPosition(position : int):
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        db_connection.isolation_level = None
+        cur = db_connection.cursor()
+        cur.execute("begin")
+        sql_select_query = """select * from Questions where position = ?"""
+        cur.execute(sql_select_query, (position,))
         records = cur.fetchall()
         return Question.TupleToJson(records[0])
 

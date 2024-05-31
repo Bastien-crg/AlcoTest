@@ -39,7 +39,7 @@ class Answer():
         anwser.id = cur.lastrowid
 
     @staticmethod
-    def GetListAnswerFromSql(id : int):
+    def GetListAnswerFromSqlQuestionId(id : int):
         db_connection = sqlite3.connect(f"SQLBase.db")
         db_connection.isolation_level = None
         cur = db_connection.cursor()

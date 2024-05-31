@@ -44,8 +44,21 @@ def CreateQuestion():
  
 @app.route('/questions/<questionId>', methods=['GET'])
 def GetQuestionInfo(questionId):
-	Json = Question.GetQuestionFromSql(questionId)
-	lst = Answer.GetListAnswerFromSql(questionId)
+	Json = Question.GetQuestionFromSqlId(questionId)
+	lst = Answer.GetListAnswerFromSqlQuestionId(questionId)
+	dict1 = json.loads(Json)
+	dict2 = json.loads(lst)
+	merged_dict = {**dict1, **dict2}
+	merged_json_str = json.dumps(merged_dict)
+	print(merged_json_str)
+	return merged_json_str, 200
+
+@app.route('/questions', methods=['GET'])
+def GetQuestionInfoByPosition():
+	bar = request.args.to_dict()
+	Json = Question.GetQuestionFromSqlPosition(bar['position'])
+	temp = json.loads(Json)
+	lst = Answer.GetListAnswerFromSqlQuestionId(int(temp['id']))
 	dict1 = json.loads(Json)
 	dict2 = json.loads(lst)
 	merged_dict = {**dict1, **dict2}
