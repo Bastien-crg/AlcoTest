@@ -1,2 +1,6 @@
 quizz-ui/node_modules/
 
+quizz-api/myenv
+quizz-api/__pycache__
+quizz-api/SQLBase.db
+quizz-api/SQLBase.db-journal
