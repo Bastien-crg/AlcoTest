@@ -4,6 +4,7 @@ import jwt_utils
 import sqlite3
 from Question import Question 
 from Answer import Answer
+from Score import Score
 import json
 
 app = Flask(__name__)
@@ -102,7 +103,19 @@ def SubmitAnwsers(player_name,answers):
     print(answers)
     return 'No content', 200
 
+"""
+@app.route('/participations/all', methods=['DELETE'])
+def DeleteQuestion():
+	if (request.headers.get('Authorization') == None):
+		return 'Unauthorized', 401
+	Score.DeleteAllScore()
+	return 'No content', 204
+"""
 
+@app.route('/participations', methods=['POST'])
+def AddParticipation(player_name,answers):
+	print(player_name,answers)
+	return 'No content', 200	
 
 if __name__ == "__main__":
     app.run()
