@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue';
 import quizApiService from "@/services/QuizApiService";
 
+
+
+
 const registeredScores = ref([]);
 
 onMounted(async () => {
@@ -18,4 +21,5 @@ onMounted(async () => {
   <div v-for="scoreEntry in registeredScores" v-bind:key="scoreEntry.date">
     {{ scoreEntry.playerName }} - {{ scoreEntry.score }}
   </div>
+  {{ playerName }}
 </template>

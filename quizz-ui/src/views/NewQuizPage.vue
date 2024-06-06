@@ -1,10 +1,15 @@
-<script>
+<script setup>
+
+import username from "../components/username.vue"
+
+
 
 </script>
 
 
 <template>
-    Ceci est un test
+    <username/>
+    
 </template>
 
 <style>
