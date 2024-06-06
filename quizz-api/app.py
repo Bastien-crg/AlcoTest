@@ -97,6 +97,13 @@ def DeleteAllQuestion():
 	Question.DeleteAllQuestion()
 	return 'No content', 204
 
+@app.route('/participations', methods=['POST'])
+def SubmitAnwsers(player_name,answers):
+    print(answers)
+    return 'No content', 200
+
+
+
 if __name__ == "__main__":
     app.run()
     
