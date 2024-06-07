@@ -6,6 +6,7 @@ from Question import Question
 from Answer import Answer
 from Score import Score
 import json
+from db import Database
 
 app = Flask(__name__)
 app = Flask(__name__)
@@ -132,6 +133,13 @@ def AddParticipation():
 	payload.update(jsonScore)
 	Score.AddScoreToSql(Score.ConvertToPython(payload))
 	return {"answersSummaries" : anwserSummary, "playerName" : payload["playerName"], "score" : score}, 200	
+
+@app.route('/rebuild-db', methods=['POST'])
+def BuildDatabase():
+    db = Database(name="database")
+    db.createDatabase()
+    return 'Ok', 200
+
 
 if __name__ == "__main__":
     app.run()
