@@ -4,7 +4,9 @@ import jwt_utils
 import sqlite3
 from Question import Question 
 from Answer import Answer
+from Score import Score
 import json
+from db import Database
 
 app = Flask(__name__)
 app = Flask(__name__)
@@ -17,7 +19,9 @@ def hello_world():
 
 @app.route('/quiz-info', methods=['GET'])
 def GetQuizInfo():
-	return {"size": 0, "scores": []}, 200
+    size = Question.GetNumOfQuestion()
+    lst = Score.GetAllScore()
+    return {"size": size, "scores": lst}, 200
 
 
 @app.route('/login', methods=['POST'])
@@ -35,11 +39,14 @@ def CreateQuestion():
 		return 'Unauthorized', 401
 	payload = request.get_json()
 	question = Question.ConvertToPython(payload)
-	Question.AddQuestionToSql(question)		
+	Question.AddQuestionToSql(question)
+	position = 1		
 	for data in payload["possibleAnswers"]:
 		anwser = Answer.ConvertToPython(data)
 		anwser.questionId = question.id
+		anwser.position = position
 		Answer.AddAnswerToSql(anwser)
+		position += 1	
 	return {"id" : question.id}, 200
  
 @app.route('/questions/<questionId>', methods=['GET'])
@@ -72,7 +79,6 @@ def GetQuestionInfoByPosition():
 @app.route('/questions/<questionId>', methods=['PUT'])
 def UpdateQuestion(questionId):
 	payload = request.get_json()
-	
 	bollean = Question.UpdateQuestion(questionId,payload)
 	if(not bollean):
 		return "No Content", 404
@@ -96,6 +102,44 @@ def DeleteAllQuestion():
 	Answer.DeleteAllAnswer()
 	Question.DeleteAllQuestion()
 	return 'No content', 204
+
+
+
+
+@app.route('/participations/all', methods=['DELETE'])
+def DeleteParticipations():
+	if (request.headers.get('Authorization') == None):
+		return 'Unauthorized', 401
+	Score.DeleteAllScore()
+	return 'No content', 204
+
+
+@app.route('/participations', methods=['POST'])
+def AddParticipation():
+	payload = request.get_json()
+	size = Question.GetNumOfQuestion()
+	if(size != len(payload["answers"])):
+		return "Bad request", 400
+	score = 0
+	anwserSummary = []
+	for i in range(len(payload["answers"])):
+		quest = Question.GetQuestionFromSqlPosition(i+1)
+		dict1 = json.loads(quest)
+		anwser = (Answer.GetCorrectAnswerPosition(dict1["id"]))
+		anwserSummary.append((anwser["position"],payload["answers"][i]))
+		if anwser["position"] == payload["answers"][i]:
+			score += 1
+	jsonScore = {"score": score}
+	payload.update(jsonScore)
+	Score.AddScoreToSql(Score.ConvertToPython(payload))
+	return {"answersSummaries" : anwserSummary, "playerName" : payload["playerName"], "score" : score}, 200	
+
+@app.route('/rebuild-db', methods=['POST'])
+def BuildDatabase():
+    db = Database(name="database")
+    db.createDatabase()
+    return 'Ok', 200
+
 
 if __name__ == "__main__":
     app.run()

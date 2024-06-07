@@ -1,9 +1,6 @@
 quizz-ui/node_modules/
-quizz-ui/.vite/
 
 quizz-api/myenv
 quizz-api/__pycache__
 quizz-api/SQLBase.db
 quizz-api/SQLBase.db-journal
-
-.idea/
