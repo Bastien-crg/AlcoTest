@@ -189,3 +189,16 @@ class Question():
         cur.close()
         return True
     
+    @staticmethod
+    def GetNumOfQuestion():
+        db_connection = sqlite3.connect(f"SQLBase.db")
+        cur = db_connection.cursor()
+        cur.execute("begin")  
+        cur.execute(
+            "SELECT COUNT(*) FROM Questions",
+        )
+        size = cur.fetchall()[0][0]
+        cur.execute("commit")
+        cur.close()
+        return size
+    
