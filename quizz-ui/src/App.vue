@@ -1,9 +1,21 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import participationStorageService from "@/services/ParticipationStorageService";
+import quizApiService from "@/services/QuizApiService";
+
+onMounted(async () => {
+  if (participationStorageService.getToken() == null || participationStorageService.getToken() == undefined ){
+    let payload = quizApiService.login()
+    payload.then(payload => participationStorageService.saveToken(payload.data.token))
+  }
+
+  
+});
 </script>
 
 <template>
-  <RouterView />
+  <RouterView v-if="participationStorageService.getToken() != null" />
 </template>
 
 <style scoped>

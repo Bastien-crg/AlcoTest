@@ -136,7 +136,7 @@ def AddParticipation():
 
 @app.route('/rebuild-db', methods=['POST'])
 def BuildDatabase():
-    db = Database(name="database")
+    db = Database(name="SQLBase.db")
     db.createDatabase()
     return 'Ok', 200
 

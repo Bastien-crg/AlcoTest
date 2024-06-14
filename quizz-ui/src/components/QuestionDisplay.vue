@@ -15,7 +15,6 @@
     <div v-for="choice in props.currentQuestion.possibleAnswers">
         <a @click="emit('answer-clicked', choice.text)">{{choice.text}}</a>
     </div>
-
 </template>
 
 <script setup>
