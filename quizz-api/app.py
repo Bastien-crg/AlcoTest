@@ -39,6 +39,7 @@ def CreateQuestion():
 		return 'Unauthorized', 401
 	payload = request.get_json()
 	question = Question.ConvertToPython(payload)
+	print(question.content)
 	Question.AddQuestionToSql(question)
 	position = 1		
 	for data in payload["possibleAnswers"]:
@@ -136,8 +137,9 @@ def AddParticipation():
 
 @app.route('/rebuild-db', methods=['POST'])
 def BuildDatabase():
-    db = Database(name="database")
+    db = Database(name="SQLBase.db")
     db.createDatabase()
+    db.createDatabaseContent()
     return 'Ok', 200
 
 

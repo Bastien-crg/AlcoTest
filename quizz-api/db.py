@@ -14,4 +14,14 @@ class Database():
                 cur.executescript(sql_file.read())
         finally:
             cur.close()
+            
+            
+    def createDatabaseContent(self):
+        db = sqlite3.connect(self.name)
+        try:
+            cur = db.cursor()
+            with open("SQLBaseContent.db.sql", 'r', encoding="utf-8") as sql_file:
+                cur.executescript(sql_file.read())
+        finally:
+            cur.close()
         
