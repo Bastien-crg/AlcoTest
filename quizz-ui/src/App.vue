@@ -1,24 +1,18 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { ref, onMounted } from 'vue';
-import participationStorageService from "@/services/ParticipationStorageService";
-import quizApiService from "@/services/QuizApiService";
+import NavBar from "@/components/NavBar.vue"
 
-onMounted(async () => {
-  if (participationStorageService.getToken() == null || participationStorageService.getToken() == undefined ){
-    let payload = quizApiService.login()
-    payload.then(payload => participationStorageService.saveToken(payload.data.token))
-  }
 
-  
-});
 </script>
 
 <template>
-  <RouterView v-if="participationStorageService.getToken() != null" />
+  <NavBar></NavBar>
+  <RouterView/>
 </template>
 
 <style scoped>
+
+/*
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -79,5 +73,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+}*/
 </style>

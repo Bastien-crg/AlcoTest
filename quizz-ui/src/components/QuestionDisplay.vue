@@ -12,12 +12,21 @@
     </div>
     <br/>
     
-    <div v-for="choice in props.currentQuestion.possibleAnswers">
-        <a @click="emit('answer-clicked', choice.text)">{{choice.text}}</a>
+    <div v-for="choice,i in props.currentQuestion.possibleAnswers">
+        <a @click="emit('answer-clicked', i+1)">{{choice.text}}</a>
     </div>
 </template>
 
 <script setup>
+
+function getAnswerIndex(answer){
+  for (let i = 0; i < props.currentQuestion.possibleAnswers.length; i++) {
+    if (props.currentQuestion.possibleAnswers[i].text == answer){
+      return i+1;
+    }
+  }
+  return -1;
+}
 
 
 
@@ -27,6 +36,8 @@ const props = defineProps({
 
 
 const emit = defineEmits(['answer-clicked']);
+
+
 
 </script>
 

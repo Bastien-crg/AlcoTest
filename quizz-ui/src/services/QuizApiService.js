@@ -13,7 +13,6 @@ export default {
       "Access-Control-Allow-Origin": "*"
     };
     if (token != null) {
-      console.log(participationStorageService.getToken())
       headers.authorization = "Bearer " + token;
     }
 
@@ -31,17 +30,25 @@ export default {
       });
   },
   getQuizInfo() {
-    return this.call("get", "quiz-info", participationStorageService.getToken());
+    return this.call("get", "quiz-info");
   },
   getQuestionByPos(position) {
-    return this.call("get", "questions?position="+position, participationStorageService.getToken());
+    return this.call("get", "questions?position=" + position);
   },
-  getQuestionByPos(position) {
-    return this.call("get", "questions?position="+position, participationStorageService.getToken());
+  deleteQuestionById(questionId) {
+    return this.call("delete", "questions/" + questionId, null, participationStorageService.getToken());
   },
-  login() {
+  sendAnswer(playerName, answers) {
     let body = {
-      "password": "flask2023"
+      "playerName": playerName,
+      "answers": answers
+    }
+    console.log(body)
+    return this.call("post", "participations", body);
+  },
+  login(password) {
+    let body = {
+      "password": password
     }
     return this.call("post", "login", body);
   },
