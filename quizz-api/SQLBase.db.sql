@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS "Questions";
 CREATE TABLE IF NOT EXISTS "Questions" (
 	"Position"	INTEGER,
 	"Title"	TEXT,
-	"Content"	TEXT,
+	"Content" TEXT,
 	"Image"	TEXT,
 	"Id"	INTEGER UNIQUE,
 	PRIMARY KEY("Id" AUTOINCREMENT)
