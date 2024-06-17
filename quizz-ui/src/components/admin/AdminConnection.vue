@@ -32,7 +32,7 @@ function login(){
     <div v-if="wrong_password_flag">Mauvais mot de passe</div>
     <input type="password" class="form-control" v-model="password" placeholder="Password">
   </div>
-  <button class="btn btn-primary" @click="login()" >Submit</button>
+  <button class="btn btn-primary" @click="login()" >Connexion</button>
     
 </template>
 

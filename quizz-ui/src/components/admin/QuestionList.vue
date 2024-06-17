@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="btn btn-success">Créer un question</button>
+  <button type="button" class="btn btn-success" @click="createQuestion()" >Créer un question</button>
   <br/>
   <table id="example" class="table table-striped" style="width:100%">
     <thead>
@@ -26,10 +26,15 @@ import quizApiService from "@/services/QuizApiService";
 import participationStorageService from "@/services/ParticipationStorageService";
 
 const question_list = ref([])
-const emit = defineEmits(['chosenQuestion']);
+const emit = defineEmits(['chosenQuestion','createQuestion']);
 
 function editQuestion(question){
   emit('chosenQuestion', question)
+}
+
+function createQuestion(){
+  emit('createQuestion', true)
+
 }
 
 onMounted(() => {
@@ -43,9 +48,6 @@ onMounted(() => {
     
   }
   })
-
-
-  
 
 });
 </script>

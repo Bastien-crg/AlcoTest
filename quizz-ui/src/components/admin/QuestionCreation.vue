@@ -129,7 +129,7 @@ function validateEdit(){
     ]
   }
   
-  let payload = QuizApiService.updateQuestion(props.currentQuestion.id,body);
+  let payload = QuizApiService.addQuestion(body);
   payload.then(() => {
     emit('questionEdited', true)
   })
@@ -144,21 +144,7 @@ const props = defineProps({
 });
 
 
-onMounted(() => {
-  title.value = props.currentQuestion.title
-  text.value = props.currentQuestion.text
-  position.value = props.currentQuestion.position
-  imagedata.value = props.currentQuestion.image
-  rep1.value = props.currentQuestion.possibleAnswers[0].text
-  rep2.value = props.currentQuestion.possibleAnswers[1].text
-  rep3.value = props.currentQuestion.possibleAnswers[2].text
-  rep4.value = props.currentQuestion.possibleAnswers[3].text
-  isCorrect1.value = props.currentQuestion.possibleAnswers[0].isCorrect
-  isCorrect2.value = props.currentQuestion.possibleAnswers[1].isCorrect
-  isCorrect3.value = props.currentQuestion.possibleAnswers[2].isCorrect
-  isCorrect4.value = props.currentQuestion.possibleAnswers[3].isCorrect
-  
-});
+
 
 
 

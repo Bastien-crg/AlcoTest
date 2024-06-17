@@ -1,6 +1,7 @@
 <template>
-  <button type="button" class="btn btn-success" @click="editQuestion(question)" >Modifier</button>
+  <button type="button" class="btn btn-success" @click="editQuestion(props.currentQuestion)" >Modifier</button>
   <button type="button" class="btn btn-danger" @click="deleteQuestion()" >Supprimer</button>
+  <button type="button" class="btn btn-primary" @click="backToList()" >Retour</button>
   <table class="table">
     <tbody>
       <tr>
@@ -31,7 +32,7 @@ import { useRouter } from 'vue-router'
 
 
 const router = useRouter()
-const emit = defineEmits(['questionDeleted','editQuestion']);
+const emit = defineEmits(['questionDeleted','editQuestion','backToList']);
 
 
 function isActive(answer){
@@ -40,6 +41,9 @@ function isActive(answer){
   } else {
     return "list-group-item"
   }
+}
+function backToList(){
+  emit('backToList', true)
 }
 
 function editQuestion(question){

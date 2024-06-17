@@ -38,6 +38,12 @@ export default {
   deleteQuestionById(questionId) {
     return this.call("delete", "questions/" + questionId, null, participationStorageService.getToken());
   },
+  updateQuestion(questionId,data) {
+    return this.call("put", "questions/" + questionId, data, participationStorageService.getToken());
+  },
+  addQuestion(data) {
+    return this.call("post", "questions", data, participationStorageService.getToken());
+  },
   sendAnswer(playerName, answers) {
     let body = {
       "playerName": playerName,
