@@ -14,12 +14,39 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h1>Home page</h1>
-  <br/>
-  <router-link to="/new-quiz">Démarrer le quiz !</router-link>
-  <br/>
-  <div v-for="scoreEntry in JSON.parse(participationStorageService.getParticipationScore()).scores" v-bind:key="scoreEntry.date">
-    {{ scoreEntry.playerName }} - {{ scoreEntry.score }}
+
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h1>AlcoTest</h1>
+      </div>
+    </div>
   </div>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <router-link to="/new-quiz">Démarrer le quiz !</router-link>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <div v-for="scoreEntry in JSON.parse(participationStorageService.getParticipationScore()).scores" v-bind:key="scoreEntry.date">
+          {{ scoreEntry.playerName }} - {{ scoreEntry.score }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
   
 </template>
+
+<style>
+#container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

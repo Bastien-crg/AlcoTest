@@ -29,11 +29,19 @@ function getNextQuestion(){
     let payload = quizApiService.sendAnswer(participationStorageService.getPlayerName(), answers.value);
     payload.then(res =>{
       score.value = res.data
-      is_form_over.value = true;
+      updateScoreBoard();
     });
     
   }
   
+}
+
+function updateScoreBoard(){
+  let payload = quizApiService.getQuizInfo();
+  payload.then(res => {
+    participationStorageService.saveParticipationScore(JSON.stringify(res.data));
+    is_form_over.value = true;
+  })
 }
 
 
@@ -44,10 +52,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <h1>Question Manager</h1>
-  </div>
-  <br/>
   <QuestionDisplay v-if="current_question_data != null && !is_form_over" :currentQuestion="current_question_data" @answer-clicked="callback"></QuestionDisplay>
   <ScoreDisplay v-if="score != null" :score="score" @answer-clicked="callback"></ScoreDisplay>
 

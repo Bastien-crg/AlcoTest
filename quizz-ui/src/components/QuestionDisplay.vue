@@ -1,20 +1,35 @@
 <template>
-    <div>
-      <h1>{{ props.currentQuestion.title }}</h1>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <h1>{{ props.currentQuestion.title }}</h1>
+      </div>
     </div>
-    <br/>
-    <div>
+  </div>
+  <br/>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
         {{ props.currentQuestion.text }}
+      </div>
     </div>
-    <br/>
-    <div>
+  </div>
+  <br/>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
         <img v-if="props.currentQuestion.image" :src="props.currentQuestion.image" />
+      </div>
     </div>
-    <br/>
-    
-    <div v-for="choice,i in props.currentQuestion.possibleAnswers">
-        <a @click="emit('answer-clicked', i+1)">{{choice.text}}</a>
+  </div>
+  <br/>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto" v-for="choice,i in props.currentQuestion.possibleAnswers">
+        <button @click="emit('answer-clicked', i+1)" type="button" class="btn btn-success">{{choice.text}}</button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>

@@ -18,21 +18,9 @@
       </div>
     </div>
     <label for="validationCustom02">Réponses</label>
-    <div class="form-check">
-      <input class="form-check-input position-static" type="radio" name="blankRadio" id="blankRadio1" @click="checkBox(1)" aria-label="...">
-      <input type="text" class="form-control"  placeholder="Réponse 1" v-model="rep1" required>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input position-static" type="radio" name="blankRadio" id="blankRadio1" @click="checkBox(2)" aria-label="...">
-      <input type="text" class="form-control" placeholder="Réponse 2" v-model="rep2" required>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input position-static" type="radio" name="blankRadio" id="blankRadio1" @click="checkBox(3)" aria-label="...">
-      <input type="text" class="form-control" placeholder="Réponse 3" v-model="rep3" required>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input position-static" type="radio" name="blankRadio" id="blankRadio1" @click="checkBox(4)" aria-label="...">
-      <input type="text" class="form-control" placeholder="Réponse 4" v-model="rep4" required>
+    <div v-for="answer, index in props.currentQuestion.possibleAnswers" class="form-check">
+      <input class="form-check-input position-static" type="radio" name="blankRadio" id="blankRadio1" @click="checkBox(index+1)" aria-label="...">
+      <input type="text" class="form-control"  placeholder="Réponse 1" v-model="answer.text" required>
     </div>
   </form>
   
